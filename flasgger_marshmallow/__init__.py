@@ -143,7 +143,7 @@ def swagger_decorator(
                 'in': 'body',
                 'name': 'body',
                 'required': True,
-                'description': 'json 类型的body',
+                'description': 'json body',
                 'schema': {
                     'properties': parse_json_schema(c_schema),
                     'type': 'object',
