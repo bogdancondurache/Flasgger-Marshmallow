@@ -124,6 +124,7 @@ def swagger_decorator(
                     }
                     if not isinstance(value.default, _Missing):
                         tmp[key]['default'] = value.default
+                        tmp[key]['example'] = value.default
                 else:
                     values_real_types = list(set(FIELDS_JSON_TYPE_MAP) & set(value.__class__.__mro__))
                     values_real_types.sort(key=value.__class__.__mro__.index)
@@ -136,6 +137,7 @@ def swagger_decorator(
                     }
                     if not isinstance(value.default, _Missing):
                         tmp[key]['default'] = value.default
+                        tmp[key]['example'] = value.default
             return tmp
 
         def parse_request_body_json_schema(c_schema):
