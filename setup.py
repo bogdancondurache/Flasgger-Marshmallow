@@ -31,7 +31,7 @@ VERSION = "0.0.5"
 
 LICENSE = "MIT"
 
-INSTALL_REQUIRES = ["flask>=1.0.0", "flasgger>=0.9.3", "marshmallow>=2.18.1", "PyYAML"]
+INSTALL_REQUIRES = ["flask>=1.0.0", "flasgger>=0.9.3", "marshmallow>=2.18.1", "PyYAML", "marshmallow-enum>=1.5.1"]
 
 setup(
     name=NAME,

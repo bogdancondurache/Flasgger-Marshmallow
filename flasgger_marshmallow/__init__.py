@@ -6,6 +6,7 @@ import yaml
 from flask import request
 from marshmallow import fields
 from marshmallow.utils import _Missing
+from marshmallow_enum import EnumField
 
 logging.basicConfig(
     filemode="w",
@@ -38,6 +39,7 @@ FIELDS_JSON_TYPE_MAP = {
     fields.Str: 'string',
     fields.Bool: 'bool',
     fields.Int: 'number',
+    EnumField: 'string'
 }
 
 if int(marshmallow.__version__.split('.')[1]) == 3:
