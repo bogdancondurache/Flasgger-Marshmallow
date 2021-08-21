@@ -71,6 +71,7 @@ def unpack(value):
 
 
 def swagger_decorator(
+        tag=None,
         path_schema=None, query_schema=None,
         form_schema=None, json_schema=None,
         headers_schema=None, response_schema=None,
@@ -157,6 +158,8 @@ def swagger_decorator(
 
         def generate_doc():
             doc_dict = {}
+            if tag:
+                doc_dict["tags"] = [tag]
             if path_schema or query_schema or form_schema or json_schema or headers_schema:
                 doc_dict['parameters'] = []
             if path_schema:
@@ -227,7 +230,7 @@ def swagger_decorator(
             logger.info('response data\ndata: %s\ncode: %s\nheaders: %s\n', data, code, headers)
             try:
                 if response_schema and response_schema.get(code):
-                    data = response_schema.get(code)().load(data or {})
+                    data = response_schema.get(code)().dump(data or {})
                     r_headers_schema = getattr(response_schema.get(code).Meta, 'headers', None)
                     if r_headers_schema:
                         headers = r_headers_schema().load(headers or {})
