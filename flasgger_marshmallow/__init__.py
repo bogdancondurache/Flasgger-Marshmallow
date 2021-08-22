@@ -112,6 +112,9 @@ def swagger_decorator(
                                 'properties': parse_json_schema(value.schema),
                             }
                         }
+                        if not isinstance(value.default, _Missing):
+                            tmp[key]["default"] = value.default
+                            tmp[key]["example"] = value.default
                     else:
                         tmp[key] = {
                             'type': 'object',
