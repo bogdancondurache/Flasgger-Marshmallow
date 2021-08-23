@@ -226,8 +226,8 @@ def swagger_decorator(
                 json_schema and setattr(request, 'json_schema', json_schema().load(json_params or {}))
                 headers_schema and setattr(request, 'headers_schema', headers_schema().load(dict(header_params)))
             except Exception as e:
-                return 'request error: %s' % ''.join(
-                    [('%s: %s; ' % (x, ''.join(y))) for x, y in e.messages.items()]), 400
+                return {'error_message': f'request error: {str(e)}'}, 400
+
             f_result = func(*args, **kw)
             data, code, headers = unpack(f_result)
             logger.info('response data\ndata: %s\ncode: %s\nheaders: %s\n', data, code, headers)
@@ -238,9 +238,8 @@ def swagger_decorator(
                     if r_headers_schema:
                         headers = r_headers_schema().load(headers or {})
             except Exception as e:
-                return 'response error: %s' % ''.join(
-                    [('%s: %s; ' % (x, ''.join([str(z) for z in y]))) for x, y in e.messages.items()]
-                ), 400
+                return {'error_message': f'response error: {str(e)}'}, 400
+
             return data, code, headers
 
         return wrapper
