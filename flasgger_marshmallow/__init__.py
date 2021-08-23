@@ -226,19 +226,17 @@ def swagger_decorator(
                 json_schema and setattr(request, 'json_schema', json_schema().load(json_params or {}))
                 headers_schema and setattr(request, 'headers_schema', headers_schema().load(dict(header_params)))
             except Exception as e:
-                return {'error_message': f'request error: {str(e)}'}, 400
+                return {'error_id': 'InvalidInput', 'error_message': f'request error: {str(e)}'}, 400
 
             f_result = func(*args, **kw)
             data, code, headers = unpack(f_result)
             logger.info('response data\ndata: %s\ncode: %s\nheaders: %s\n', data, code, headers)
-            try:
-                if response_schema and response_schema.get(code):
-                    data = response_schema.get(code)().dump(data or {})
-                    r_headers_schema = getattr(response_schema.get(code).Meta, 'headers', None)
-                    if r_headers_schema:
-                        headers = r_headers_schema().load(headers or {})
-            except Exception as e:
-                return {'error_message': f'response error: {str(e)}'}, 400
+
+            if response_schema and response_schema.get(code):
+                data = response_schema.get(code)().dump(data or {})
+                r_headers_schema = getattr(response_schema.get(code).Meta, 'headers', None)
+                if r_headers_schema:
+                    headers = r_headers_schema().load(headers or {})
 
             return data, code, headers
 
