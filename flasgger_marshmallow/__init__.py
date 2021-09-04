@@ -55,17 +55,13 @@ def unpack(value):
     if not isinstance(value, tuple):
         return value, 200, {}
 
-    try:
-        data, code, headers = value
-        return data, code, headers
-    except ValueError:
-        pass
-
-    try:
+    if len(value) == 2:
         data, code = value
         return data, code, {}
-    except ValueError:
-        pass
+
+    if len(value) == 3:
+        data, code, headers = value
+        return data, code, headers
 
     return value, 200, {}
 
