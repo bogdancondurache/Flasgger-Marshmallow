@@ -222,6 +222,7 @@ def swagger_decorator(
                 json_schema and setattr(request, 'json_schema', json_schema().load(json_params or {}))
                 headers_schema and setattr(request, 'headers_schema', headers_schema().load(dict(header_params)))
             except Exception as e:
+                logger.info(f"failed to deserialize payload: {str(e)}")
                 return {'error_id': 'InvalidInput', 'error_message': f'request error: {str(e)}'}, 400
 
             f_result = func(*args, **kw)
